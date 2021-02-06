@@ -88,9 +88,9 @@ static const char *pavucontrol[] = {"pavucontrol", NULL};
 static const char *screenshot[] = {"i3-scrot", "-sc", NULL};
 
 static const char *volup[] = {"pactl", "set-sink-volume", "@DEFAULT_SINK@",
-                              "+8%", NULL};
+                              "+4%", NULL};
 static const char *voldown[] = {"pactl", "set-sink-volume", "@DEFAULT_SINK@",
-                                "-8%", NULL};
+                                "-4%", NULL};
 static const char *volmute[] = {"pactl", "set-sink-mute", "@DEFAULT_SINK@",
                                 "toggle", NULL};
 static const char *playernext[] = {"playerctl", "next", NULL};
