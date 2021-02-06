@@ -16,10 +16,18 @@ static const char col_gray2[] = "#00ff88";
 static const char col_gray3[] = "#bbbbbb";
 static const char col_gray4[] = "#eeeeee";
 static const char col_cyan[] = "#ff8800";
+static const unsigned int baralpha = 0x0;
+static const unsigned int borderalpha = OPAQUE;
 static const char *colors[][3] = {
     /*               fg         bg         border   */
     [SchemeNorm] = {col_gray3, col_gray1, col_gray2},
     [SchemeSel] = {col_gray4, col_cyan, col_cyan},
+};
+
+static const unsigned int alphas[][3] = {
+    /*               fg      bg        border     */
+    [SchemeNorm] = {OPAQUE, baralpha, borderalpha},
+    [SchemeSel] = {OPAQUE, baralpha, borderalpha},
 };
 
 /* tagging */
@@ -35,6 +43,7 @@ static const Rule rules[] = {
     {"discord", NULL, NULL, 1 << 3, 0, -1},
     {"Spotify", "spotify", "Spotify", 1 << 4, 0, -1},
     {"Pavucontrol", NULL, NULL, 0, 1, -1},
+    {"Emoji-keyboard", NULL, NULL, 0, 1, -1},
 };
 
 /* layout(s) */
