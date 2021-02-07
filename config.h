@@ -41,9 +41,8 @@ static const Rule rules[] = {
     /* class      instance    title       tags mask     isfloating   monitor */
     {"Gimp", NULL, NULL, 0, 1, -1},
     {"discord", NULL, NULL, 1 << 3, 0, -1},
-    {"Spotify", "spotify", "Spotify", 1 << 4, 0, -1},
     {"Pavucontrol", NULL, NULL, 0, 1, -1},
-    {"Emoji-keyboard", NULL, NULL, 0, 1, -1},
+    {"ibus-ui-emojier", NULL, NULL, 0, 1, -1},
 };
 
 /* layout(s) */
@@ -52,11 +51,14 @@ static const int nmaster = 1;    /* number of clients in master area */
 static const int resizehints =
     1; /* 1 means respect size hints in tiled resizals */
 
+#include "fibonacci.c"
 static const Layout layouts[] = {
     /* symbol     arrange function */
-    {"[]=", tile}, /* first entry is default */
-    {"><>", NULL}, /* no layout function means floating behavior */
-    {"[M]", monocle},
+    {"[]=", tile},     /* first entry is default */
+    {"><>", NULL},     /* no layout function means floating behavior */
+    {"[M]", monocle},  /* monocle layout                            */
+    {"[@]", spiral},   /* fibonacci first sequence    */
+    {"[\\]", dwindle}, /* fibonacci second sequence */
 };
 #define MODKEY Mod4Mask
 #define TAGKEYS(KEY, TAG)                                                      \
@@ -80,6 +82,8 @@ static const char *dmenucmd[] = {
 
 static const char *termcmd[] = {"alacritty", NULL};
 
+static const char *emoji[] = {"ibus", "emoji", NULL};
+
 static const char *roficmd[] = {"rofi", "-show", "drun", "-show-icons", NULL};
 static const char *roficalccmd[] = {"rofi", "-show", "calc", NULL};
 
@@ -88,9 +92,9 @@ static const char *pavucontrol[] = {"pavucontrol", NULL};
 static const char *screenshot[] = {"i3-scrot", "-sc", NULL};
 
 static const char *volup[] = {"pactl", "set-sink-volume", "@DEFAULT_SINK@",
-                              "+4%", NULL};
+                              "+3%", NULL};
 static const char *voldown[] = {"pactl", "set-sink-volume", "@DEFAULT_SINK@",
-                                "-4%", NULL};
+                                "-3%", NULL};
 static const char *volmute[] = {"pactl", "set-sink-mute", "@DEFAULT_SINK@",
                                 "toggle", NULL};
 static const char *playernext[] = {"playerctl", "next", NULL};
@@ -103,6 +107,7 @@ static Key keys[] = {
     /* modifier                     key        function        argument */
     {MODKEY, XK_d, spawn, {.v = roficmd}},
     {MODKEY, XK_c, spawn, {.v = roficalccmd}},
+    {MODKEY, XK_e, spawn, {.v = emoji}},
     {MODKEY, XK_Return, spawn, {.v = termcmd}},
     {MODKEY | ShiftMask, XK_m, spawn, {.v = pavucontrol}},
     {MODKEY | ShiftMask, XK_p, spawn, {.v = screenshot}},
@@ -118,9 +123,12 @@ static Key keys[] = {
     {MODKEY, XK_Return, zoom, {0}},
     {MODKEY, XK_Tab, view, {0}},
     {MODKEY | ShiftMask, XK_q, killclient, {0}},
+    {MODKEY | ShiftMask, XK_f, togglefullscr, {0}},
     {MODKEY, XK_t, setlayout, {.v = &layouts[0]}},
     {MODKEY, XK_f, setlayout, {.v = &layouts[1]}},
     {MODKEY, XK_m, setlayout, {.v = &layouts[2]}},
+    {MODKEY,                       XK_r,      setlayout,      {.v = &layouts[3]} },
+    {MODKEY|ShiftMask,             XK_r,      setlayout,      {.v = &layouts[4]} },
     {MODKEY, XK_space, setlayout, {0}},
     {MODKEY | ShiftMask, XK_space, togglefloating, {0}},
     {MODKEY, XK_0, view, {.ui = ~0}},
