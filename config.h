@@ -6,11 +6,11 @@ static const unsigned int snap = 32;    /* snap pixel */
 static const int showbar = 1;           /* 0 means no bar */
 static const int topbar = 1;            /* 0 means bottom bar */
 static const int gappx = 14;
-static const char *fonts[] = {"Fira Code:size=11",
-                              "Font Awesome 5 Brands:size=11",
-                              "Font Awesome 5 Free Solid:size=10"};
+static const char *fonts[] = {
+    "FiraCode Nerd Font:size=11", "Font Awesome 5 Brands:size=11",
+    "Font Awesome 5 Brands Solid:size=11", "Font Awesome 5 Free Solid:size=10"};
 
-static const char dmenufont[] = "Fira Code:size=10";
+static const char dmenufont[] = "FiraCode Nerd Font:size=10";
 static const char col_gray1[] = "#222222";
 static const char col_gray2[] = "#00ff88";
 static const char col_gray3[] = "#bbbbbb";
@@ -31,7 +31,7 @@ static const unsigned int alphas[][3] = {
 };
 
 /* tagging */
-static const char *tags[] = {"", "", "", "", "", "6", "7", "8", "9"};
+static const char *tags[] = {"", "", "", "", "", "", "", "8", "9"};
 
 static const Rule rules[] = {
     /* xprop(1):
@@ -42,7 +42,6 @@ static const Rule rules[] = {
     {"Gimp", NULL, NULL, 0, 1, -1},
     {"discord", NULL, NULL, 1 << 3, 0, -1},
     {"Pavucontrol", NULL, NULL, 0, 1, -1},
-    {"ibus-ui-emojier", NULL, NULL, 0, 1, -1},
 };
 
 /* layout(s) */
@@ -59,6 +58,7 @@ static const Layout layouts[] = {
     {"><>", NULL},     /* no layout function means floating behavior */
     {"[M]", monocle},  /* monocle layout                            */
     {"[\\]", dwindle}, /* fibonacci second sequence */
+    {NULL, NULL},
 };
 #define MODKEY Mod4Mask
 #define TAGKEYS(KEY, TAG)                                                      \
@@ -82,7 +82,6 @@ static const char *dmenucmd[] = {
 
 static const char *termcmd[] = {"alacritty", NULL};
 
-static const char *emoji[] = {"ibus", "emoji", NULL};
 
 static const char *roficmd[] = {"rofi", "-show", "drun", "-show-icons", NULL};
 static const char *roficalccmd[] = {"rofi", "-show", "calc", NULL};
@@ -91,10 +90,8 @@ static const char *pavucontrol[] = {"pavucontrol", NULL};
 
 static const char *screenshot[] = {"i3-scrot", "-sc", NULL};
 
-static const char *volup[] = {"pactl", "set-sink-volume", "@DEFAULT_SINK@",
-                              "+3%", NULL};
-static const char *voldown[] = {"pactl", "set-sink-volume", "@DEFAULT_SINK@",
-                                "-3%", NULL};
+static const char *volup[] = {"/home/bodzio/scripts/change_vol.sh", "+3%", NULL};
+static const char *voldown[] = {"/home/bodzio/scripts/change_vol.sh", "-3%", NULL};
 static const char *volmute[] = {"pactl", "set-sink-mute", "@DEFAULT_SINK@",
                                 "toggle", NULL};
 static const char *playernext[] = {"playerctl", "next", NULL};
@@ -107,7 +104,6 @@ static Key keys[] = {
     /* modifier                     key        function        argument */
     {MODKEY, XK_d, spawn, {.v = roficmd}},
     {MODKEY, XK_c, spawn, {.v = roficalccmd}},
-    {MODKEY, XK_e, spawn, {.v = emoji}},
     {MODKEY, XK_Return, spawn, {.v = termcmd}},
     {MODKEY | ShiftMask, XK_m, spawn, {.v = pavucontrol}},
     {MODKEY | ShiftMask, XK_p, spawn, {.v = screenshot}},
@@ -124,11 +120,13 @@ static Key keys[] = {
     {MODKEY, XK_Tab, view, {0}},
     {MODKEY | ShiftMask, XK_q, killclient, {0}},
     {MODKEY | ShiftMask, XK_f, togglefullscr, {0}},
-    {MODKEY,                       XK_r,      setlayout,      {.v = &layouts[0]} },
+    {MODKEY, XK_r, setlayout, {.v = &layouts[0]}},
     {MODKEY, XK_t, setlayout, {.v = &layouts[1]}},
     {MODKEY, XK_f, setlayout, {.v = &layouts[2]}},
     {MODKEY, XK_m, setlayout, {.v = &layouts[3]}},
-    {MODKEY|ShiftMask,             XK_r,      setlayout,      {.v = &layouts[4]} },
+    {MODKEY | ControlMask, XK_comma, cyclelayout, {.i = -1}},
+    {MODKEY | ControlMask, XK_period, cyclelayout, {.i = +1}},
+    {MODKEY | ShiftMask, XK_r, setlayout, {.v = &layouts[4]}},
     {MODKEY, XK_space, setlayout, {0}},
     {MODKEY | ShiftMask, XK_space, togglefloating, {0}},
     {MODKEY, XK_0, view, {.ui = ~0}},
