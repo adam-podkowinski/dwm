@@ -7,8 +7,7 @@ static const int showbar = 1;           /* 0 means no bar */
 static const int topbar = 1;            /* 0 means bottom bar */
 static const int gappx = 14;
 static const char *fonts[] = {
-    "FiraCode Nerd Font:size=11", "Font Awesome 5 Brands:size=11",
-    "Font Awesome 5 Brands Solid:size=11", "Font Awesome 5 Free Solid:size=10"};
+    "FiraCode Nerd Font:size=11", "Font Awesome 5 Brands", "Font Awesome 5 Free Solid", "Font Awesome 5 Free Regular"};
 
 static const char dmenufont[] = "FiraCode Nerd Font:size=10";
 static const char col_gray1[] = "#222222";
