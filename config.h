@@ -8,7 +8,7 @@ static const int topbar = 1;            /* 0 means bottom bar */
 static const int gappx = 14;
 
 static const char *fonts[] = {"FiraCode Nerd Font:size=10",
-                              "Noto Color Emoji:size=9"};
+                              "Noto Color Emoji:size=10"};
 
 static const char dmenufont[] = "FiraCode Nerd Font:size=10";
 static const char col_gray1[] = "#222222";
