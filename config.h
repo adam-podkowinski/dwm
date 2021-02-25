@@ -7,7 +7,8 @@ static const int showbar = 1;           /* 0 means no bar */
 static const int topbar = 1;            /* 0 means bottom bar */
 static const int gappx = 14;
 
-static const char *fonts[] = {"FiraCode Nerd Font:size=10", "Noto Color Emoji:size=9"};
+static const char *fonts[] = {"FiraCode Nerd Font:size=10",
+                              "Noto Color Emoji:size=9"};
 
 static const char dmenufont[] = "FiraCode Nerd Font:size=10";
 static const char col_gray1[] = "#222222";
@@ -31,14 +32,16 @@ static const unsigned int alphas[][3] = {
 
 /* tagging */
 // static const char *tags[] = {"", "", "", "", "", "", "", "8", "9"};
-static const char *tags[] = {"", "", "", "ﭮ", "", "", "", "8", "9"};
+// static const char *tags[] = {"", "", "", "ﭮ", "", "", "", "8", "9"};
+static const char *tags[] = {"🌍", "👺", "🎮", "📞", "🎵", "🎥", "🦴", "🛖", "💜"};
 
 static const Rule rules[] = {
     /* xprop(1):
      *	WM_CLASS(STRING) = instance, class
      *	WM_NAME(STRING) = title
      */
-    /* class      instance    title       tags mask     isfloating   monitor */
+    /* class      instance    title       tags mask     isfloating   monitor
+     */
     {"Gimp", NULL, NULL, 0, 1, -1},
     {"discord", NULL, NULL, 1 << 3, 0, -1},
     {"Microsoft Teams - Preview", NULL, NULL, 1 << 1, 0, -1},
@@ -97,9 +100,11 @@ static const char *screenshot[] = {"/home/bodzio/scripts/scrot_clip.sh", NULL};
 
 static const char *sysact[] = {"/home/bodzio/scripts/sysact", NULL};
 
-static const char *volup[] = {"/home/bodzio/scripts/change_vol.sh", "+3%",
-                              NULL};
-static const char *voldown[] = {"/home/bodzio/scripts/change_vol.sh", "-3%",
+static const char *dmenuunicode[] = {"/home/bodzio/scripts/dmenuunicode.sh",
+                                     NULL};
+
+static const char *volup[] = {"/home/bodzio/scripts/change_vol.sh", "+3", NULL};
+static const char *voldown[] = {"/home/bodzio/scripts/change_vol.sh", "-3",
                                 NULL};
 static const char *volmute[] = {"pactl", "set-sink-mute", "@DEFAULT_SINK@",
                                 "toggle", NULL};
@@ -115,6 +120,7 @@ static Key keys[] = {
     {MODKEY | ShiftMask, XK_d, spawn, {.v = rofirun}},
     {MODKEY, XK_c, spawn, {.v = roficalccmd}},
     {MODKEY, XK_Return, spawn, {.v = termcmd}},
+    {MODKEY, XK_e, spawn, {.v = dmenuunicode}},
     {MODKEY | ShiftMask, XK_m, spawn, {.v = pavucontrol}},
     {MODKEY | ShiftMask, XK_p, spawn, {.v = screenshot}},
     {MODKEY, XK_BackSpace, spawn, {.v = sysact}},
