@@ -48,6 +48,7 @@ static const Rule rules[] = {
     {"obs", NULL, NULL, 1 << 5, 0, -1},
     {"Steam", NULL, NULL, 1 << 6, 0, -1},
     {"Pavucontrol", NULL, NULL, 0, 1, -1},
+    {"MEGAsync", NULL, NULL, 0, 1, -1},
 };
 
 /* layout(s) */
