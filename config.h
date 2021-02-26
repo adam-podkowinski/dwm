@@ -5,31 +5,50 @@ static const unsigned int borderpx = 2; /* border pixel of windows */
 static const unsigned int snap = 32;    /* snap pixel */
 static const int showbar = 1;           /* 0 means no bar */
 static const int topbar = 1;            /* 0 means bottom bar */
-static const int gappx = 10;            /* 0 means bottom bar */
-static const char *fonts[] = {"Fira Code:size=10"};
-static const char dmenufont[] = "Fira Code:size=10";
+static const int gappx = 14;
+
+static const char *fonts[] = {"FiraCode Nerd Font:size=10",
+                              "Noto Color Emoji:size=10"};
+
+static const char dmenufont[] = "FiraCode Nerd Font:size=10";
 static const char col_gray1[] = "#222222";
 static const char col_gray2[] = "#00ff88";
 static const char col_gray3[] = "#bbbbbb";
 static const char col_gray4[] = "#eeeeee";
 static const char col_cyan[] = "#ff8800";
+static const unsigned int baralpha = 0x0;
+static const unsigned int borderalpha = OPAQUE;
 static const char *colors[][3] = {
     /*               fg         bg         border   */
     [SchemeNorm] = {col_gray3, col_gray1, col_gray2},
     [SchemeSel] = {col_gray4, col_cyan, col_cyan},
 };
 
+static const unsigned int alphas[][3] = {
+    /*               fg      bg        border     */
+    [SchemeNorm] = {OPAQUE, baralpha, borderalpha},
+    [SchemeSel] = {OPAQUE, baralpha, borderalpha},
+};
+
 /* tagging */
-static const char *tags[] = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
+// static const char *tags[] = {"", "", "", "", "", "", "", "8", "9"};
+// static const char *tags[] = {"", "", "", "ﭮ", "", "", "", "8", "9"};
+static const char *tags[] = {"🌍", "👺", "🎮", "📞", "🎵", "🎥", "🦴", "🛖", "💜"};
 
 static const Rule rules[] = {
     /* xprop(1):
      *	WM_CLASS(STRING) = instance, class
      *	WM_NAME(STRING) = title
      */
-    /* class      instance    title       tags mask     isfloating   monitor */
+    /* class      instance    title       tags mask     isfloating   monitor
+     */
     {"Gimp", NULL, NULL, 0, 1, -1},
-    {"Firefox", NULL, NULL, 1 << 8, 0, -1},
+    {"discord", NULL, NULL, 1 << 3, 0, -1},
+    {"Microsoft Teams - Preview", NULL, NULL, 1 << 1, 0, -1},
+    {"obs", NULL, NULL, 1 << 5, 0, -1},
+    {"Steam", NULL, NULL, 1 << 6, 0, -1},
+    {"Pavucontrol", NULL, NULL, 0, 1, -1},
+    {"MEGAsync", NULL, NULL, 0, 1, -1},
 };
 
 /* layout(s) */
@@ -38,11 +57,15 @@ static const int nmaster = 1;    /* number of clients in master area */
 static const int resizehints =
     1; /* 1 means respect size hints in tiled resizals */
 
+#include "fibonacci.c"
 static const Layout layouts[] = {
     /* symbol     arrange function */
-    {"[]=", tile}, /* first entry is default */
-    {"><>", NULL}, /* no layout function means floating behavior */
-    {"[M]", monocle},
+    {"[@]", spiral},   /* fibonacci first sequence    */
+    {"[]=", tile},     /* first entry is default */
+    {"><>", NULL},     /* no layout function means floating behavior */
+    {"[M]", monocle},  /* monocle layout                            */
+    {"[\\]", dwindle}, /* fibonacci second sequence */
+    {NULL, NULL},
 };
 #define MODKEY Mod4Mask
 #define TAGKEYS(KEY, TAG)                                                      \
@@ -66,13 +89,47 @@ static const char *dmenucmd[] = {
 
 static const char *termcmd[] = {"alacritty", NULL};
 
+static const char *rofidrun[] = {
+    "rofi", "-show", "drun", "-show-icons", "-terminal", "alacritty", NULL};
+static const char *rofirun[] = {"rofi",      "-show",       "run", "-terminal",
+                                "alacritty", "-show-icons", NULL};
+static const char *roficalccmd[] = {"rofi", "-show", "calc", NULL};
+
+static const char *pavucontrol[] = {"pavucontrol", NULL};
+
+static const char *screenshot[] = {"/home/bodzio/scripts/scrot_clip.sh", NULL};
+
+static const char *sysact[] = {"/home/bodzio/scripts/sysact", NULL};
+
+static const char *dmenuunicode[] = {"/home/bodzio/scripts/dmenuunicode.sh",
+                                     NULL};
+
+static const char *volup[] = {"/home/bodzio/scripts/change_vol.sh", "+3", NULL};
+static const char *voldown[] = {"/home/bodzio/scripts/change_vol.sh", "-3",
+                                NULL};
+static const char *volmute[] = {"pactl", "set-sink-mute", "@DEFAULT_SINK@",
+                                "toggle", NULL};
+static const char *playernext[] = {"playerctl", "next", NULL};
+static const char *playerprev[] = {"playerctl", "previous", NULL};
+static const char *playerplaypause[] = {"playerctl", "play-pause", NULL};
+
+#include "movestack.c"
+#include <X11/XF86keysym.h>
 static Key keys[] = {
     /* modifier                     key        function        argument */
-    {MODKEY, XK_d, spawn, {.v = dmenucmd}},
+    {MODKEY, XK_d, spawn, {.v = rofidrun}},
+    {MODKEY | ShiftMask, XK_d, spawn, {.v = rofirun}},
+    {MODKEY, XK_c, spawn, {.v = roficalccmd}},
     {MODKEY, XK_Return, spawn, {.v = termcmd}},
+    {MODKEY, XK_e, spawn, {.v = dmenuunicode}},
+    {MODKEY | ShiftMask, XK_m, spawn, {.v = pavucontrol}},
+    {MODKEY | ShiftMask, XK_p, spawn, {.v = screenshot}},
+    {MODKEY, XK_BackSpace, spawn, {.v = sysact}},
     {MODKEY, XK_b, togglebar, {0}},
     {MODKEY, XK_j, focusstack, {.i = +1}},
     {MODKEY, XK_k, focusstack, {.i = -1}},
+    {MODKEY | ShiftMask, XK_j, movestack, {.i = +1}},
+    {MODKEY | ShiftMask, XK_k, movestack, {.i = -1}},
     {MODKEY, XK_i, incnmaster, {.i = +1}},
     {MODKEY, XK_p, incnmaster, {.i = -1}},
     {MODKEY, XK_h, setmfact, {.f = -0.05}},
@@ -80,9 +137,14 @@ static Key keys[] = {
     {MODKEY, XK_Return, zoom, {0}},
     {MODKEY, XK_Tab, view, {0}},
     {MODKEY | ShiftMask, XK_q, killclient, {0}},
-    {MODKEY, XK_t, setlayout, {.v = &layouts[0]}},
-    {MODKEY, XK_f, setlayout, {.v = &layouts[1]}},
-    {MODKEY, XK_m, setlayout, {.v = &layouts[2]}},
+    {MODKEY | ShiftMask, XK_f, togglefullscr, {0}},
+    {MODKEY, XK_r, setlayout, {.v = &layouts[0]}},
+    {MODKEY, XK_t, setlayout, {.v = &layouts[1]}},
+    {MODKEY, XK_f, setlayout, {.v = &layouts[2]}},
+    {MODKEY, XK_m, setlayout, {.v = &layouts[3]}},
+    {MODKEY | ControlMask, XK_comma, cyclelayout, {.i = -1}},
+    {MODKEY | ControlMask, XK_period, cyclelayout, {.i = +1}},
+    {MODKEY | ShiftMask, XK_r, setlayout, {.v = &layouts[4]}},
     {MODKEY, XK_space, setlayout, {0}},
     {MODKEY | ShiftMask, XK_space, togglefloating, {0}},
     {MODKEY, XK_0, view, {.ui = ~0}},
@@ -91,6 +153,11 @@ static Key keys[] = {
     {MODKEY, XK_period, focusmon, {.i = +1}},
     {MODKEY | ShiftMask, XK_comma, tagmon, {.i = -1}},
     {MODKEY | ShiftMask, XK_period, tagmon, {.i = +1}},
+    {0, XF86XK_AudioRaiseVolume, spawn, {.v = volup}},
+    {0, XF86XK_AudioLowerVolume, spawn, {.v = voldown}},
+    {0, XF86XK_AudioMute, spawn, {.v = volmute}},
+    {0, XF86XK_AudioNext, spawn, {.v = playernext}},
+    {0, XF86XK_AudioPrev, spawn, {.v = playerprev}},
     TAGKEYS(XK_1, 0) TAGKEYS(XK_2, 1) TAGKEYS(XK_3, 2) TAGKEYS(XK_4, 3)
         TAGKEYS(XK_5, 4) TAGKEYS(XK_6, 5) TAGKEYS(XK_7, 6) TAGKEYS(XK_8, 7)
             TAGKEYS(XK_9, 8){MODKEY | ShiftMask, XK_c, quit, {0}},
