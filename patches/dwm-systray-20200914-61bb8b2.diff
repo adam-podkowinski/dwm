@@ -2,56 +2,6 @@ diff --git a/dwm.c b/dwm.c
 index 664c527..abce13d 100644
 --- a/dwm.c
 +++ b/dwm.c
-@@ -729,7 +826,7 @@ drawbar(Monitor *m)
- 	drw_setscheme(drw, scheme[SchemeNorm]);
- 	x = drw_text(drw, x, 0, w, bh, lrpad / 2, m->ltsymbol, 0);
- 
--	if ((w = m->ww - tw - x) > bh) {
-+	if ((w = m->ww - tw - stw - x) > bh) {
- 		if (m->sel) {
- 			drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
- 			drw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0);
-@@ -740,7 +837,7 @@ drawbar(Monitor *m)
- 			drw_rect(drw, x, 0, w, bh, 1, 1);
- 		}
- 	}
--	drw_map(drw, m->barwin, 0, 0, m->ww, bh);
-+	drw_map(drw, m->barwin, 0, 0, m->ww - stw, bh);
- }
- 
- void
-@@ -777,8 +874,11 @@ expose(XEvent *e)
- 	Monitor *m;
- 	XExposeEvent *ev = &e->xexpose;
- 
--	if (ev->count == 0 && (m = wintomon(ev->window)))
-+	if (ev->count == 0 && (m = wintomon(ev->window))) {
- 		drawbar(m);
-+		if (m == selmon)
-+			updatesystray();
-+	}
- }
- 
- void
-@@ -863,10 +963,17 @@ getatomprop(Client *c, Atom prop)
- 	unsigned long dl;
- 	unsigned char *p = NULL;
- 	Atom da, atom = None;
-+	/* FIXME getatomprop should return the number of items and a pointer to
-+	 * the stored data instead of this workaround */
-+	Atom req = XA_ATOM;
-+	if (prop == xatom[XembedInfo])
-+		req = xatom[XembedInfo];
- 
--	if (XGetWindowProperty(dpy, c->win, prop, 0L, sizeof atom, False, XA_ATOM,
-+	if (XGetWindowProperty(dpy, c->win, prop, 0L, sizeof atom, False, req,
- 		&da, &di, &dl, &dl, &p) == Success && p) {
- 		atom = *(Atom *)p;
-+		if (da == xatom[XembedInfo] && dl == 2)
-+			atom = ((Atom *)p)[1];
- 		XFree(p);
- 	}
- 	return atom;
 @@ -900,6 +1007,16 @@ getstate(Window w)
  	return result;
  }
