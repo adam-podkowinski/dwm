@@ -78,36 +78,6 @@ index 664c527..abce13d 100644
  		XGrabServer(dpy);
  		XSetErrorHandler(xerrordummy);
  		XSetCloseDownMode(dpy, DestroyAll);
-@@ -1092,6 +1209,12 @@ maprequest(XEvent *e)
- {
- 	static XWindowAttributes wa;
- 	XMapRequestEvent *ev = &e->xmaprequest;
-+	Client *i;
-+	if ((i = wintosystrayicon(ev->window))) {
-+		sendevent(i->win, netatom[Xembed], StructureNotifyMask, CurrentTime, XEMBED_WINDOW_ACTIVATE, 0, systray->win, XEMBED_EMBEDDED_VERSION);
-+		resizebarwin(selmon);
-+		updatesystray();
-+	}
- 
- 	if (!XGetWindowAttributes(dpy, ev->window, &wa))
- 		return;
-@@ -1216,6 +1339,16 @@ propertynotify(XEvent *e)
- 	Window trans;
- 	XPropertyEvent *ev = &e->xproperty;
- 
-+	if ((c = wintosystrayicon(ev->window))) {
-+		if (ev->atom == XA_WM_NORMAL_HINTS) {
-+			updatesizehints(c);
-+			updatesystrayicongeom(c, c->w, c->h);
-+		}
-+		else
-+			updatesystrayiconstate(c, ev);
-+		resizebarwin(selmon);
-+		updatesystray();
-+	}
- 	if ((ev->window == root) && (ev->atom == XA_WM_NAME))
- 		updatestatus();
- 	else if (ev->state == PropertyDelete)
 @@ -1266,6 +1399,20 @@ recttomon(int x, int y, int w, int h)
  	return r;
  }
@@ -144,74 +114,6 @@ index 664c527..abce13d 100644
  void
  resizeclient(Client *c, int x, int y, int w, int h)
  {
-@@ -1345,6 +1500,19 @@ resizemouse(const Arg *arg)
- 	}
- }
- 
-+void
-+resizerequest(XEvent *e)
-+{
-+	XResizeRequestEvent *ev = &e->xresizerequest;
-+	Client *i;
-+
-+	if ((i = wintosystrayicon(ev->window))) {
-+		updatesystrayicongeom(i, ev->width, ev->height);
-+		resizebarwin(selmon);
-+		updatesystray();
-+	}
-+}
-+
- void
- restack(Monitor *m)
- {
-@@ -1434,26 +1602,36 @@ setclientstate(Client *c, long state)
- }
- 
- int
--sendevent(Client *c, Atom proto)
-+sendevent(Window w, Atom proto, int mask, long d0, long d1, long d2, long d3, long d4)
- {
- 	int n;
--	Atom *protocols;
-+	Atom *protocols, mt;
- 	int exists = 0;
- 	XEvent ev;
- 
--	if (XGetWMProtocols(dpy, c->win, &protocols, &n)) {
--		while (!exists && n--)
--			exists = protocols[n] == proto;
--		XFree(protocols);
-+	if (proto == wmatom[WMTakeFocus] || proto == wmatom[WMDelete]) {
-+		mt = wmatom[WMProtocols];
-+		if (XGetWMProtocols(dpy, w, &protocols, &n)) {
-+			while (!exists && n--)
-+				exists = protocols[n] == proto;
-+			XFree(protocols);
-+		}
-+	}
-+	else {
-+		exists = True;
-+		mt = proto;
- 	}
- 	if (exists) {
- 		ev.type = ClientMessage;
--		ev.xclient.window = c->win;
--		ev.xclient.message_type = wmatom[WMProtocols];
-+		ev.xclient.window = w;
-+		ev.xclient.message_type = mt;
- 		ev.xclient.format = 32;
--		ev.xclient.data.l[0] = proto;
--		ev.xclient.data.l[1] = CurrentTime;
--		XSendEvent(dpy, c->win, False, NoEventMask, &ev);
-+		ev.xclient.data.l[0] = d0;
-+		ev.xclient.data.l[1] = d1;
-+		ev.xclient.data.l[2] = d2;
-+		ev.xclient.data.l[3] = d3;
-+		ev.xclient.data.l[4] = d4;
-+		XSendEvent(dpy, w, False, mask, &ev);
- 	}
- 	return exists;
- }
 @@ -1467,7 +1645,7 @@ setfocus(Client *c)
  			XA_WINDOW, 32, PropModeReplace,
  			(unsigned char *) &(c->win), 1);
@@ -242,15 +144,6 @@ index 664c527..abce13d 100644
  	/* init cursors */
  	cursor[CurNormal] = drw_cur_create(drw, XC_left_ptr);
  	cursor[CurResize] = drw_cur_create(drw, XC_sizing);
-@@ -1571,6 +1756,8 @@ setup(void)
- 	scheme = ecalloc(LENGTH(colors), sizeof(Clr *));
- 	for (i = 0; i < LENGTH(colors); i++)
- 		scheme[i] = drw_scm_create(drw, colors[i], 3);
-+	/* init system tray */
-+	updatesystray();
- 	/* init bars */
- 	updatebars();
- 	updatestatus();
 @@ -1704,7 +1891,18 @@ togglebar(const Arg *arg)
  {
  	selmon->showbar = !selmon->showbar;
@@ -290,23 +183,6 @@ index 664c527..abce13d 100644
  	Monitor *m;
  	XSetWindowAttributes wa = {
  		.override_redirect = True,
-@@ -1814,10 +2019,15 @@ updatebars(void)
- 	for (m = mons; m; m = m->next) {
- 		if (m->barwin)
- 			continue;
--		m->barwin = XCreateWindow(dpy, root, m->wx, m->by, m->ww, bh, 0, DefaultDepth(dpy, screen),
-+		w = m->ww;
-+		if (showsystray && m == systraytomon(m))
-+			w -= getsystraywidth();
-+		m->barwin = XCreateWindow(dpy, root, m->wx, m->by, w, bh, 0, DefaultDepth(dpy, screen),
- 				CopyFromParent, DefaultVisual(dpy, screen),
- 				CWOverrideRedirect|CWBackPixmap|CWEventMask, &wa);
- 		XDefineCursor(dpy, m->barwin, cursor[CurNormal]->cursor);
-+		if (showsystray && m == systraytomon(m))
-+			XMapRaised(dpy, systray->win);
- 		XMapRaised(dpy, m->barwin);
- 		XSetClassHint(dpy, m->barwin, &ch);
- 	}
 @@ -1993,6 +2203,121 @@ updatestatus(void)
  	if (!gettextprop(root, XA_WM_NAME, stext, sizeof(stext)))
  		strcpy(stext, "dwm-"VERSION);
@@ -445,27 +321,4 @@ index 664c527..abce13d 100644
 +
  Monitor *
  wintomon(Window w)
- {
-@@ -2113,6 +2448,22 @@ xerrorstart(Display *dpy, XErrorEvent *ee)
- 	return -1;
- }
- 
-+Monitor *
-+systraytomon(Monitor *m) {
-+	Monitor *t;
-+	int i, n;
-+	if(!systraypinning) {
-+		if(!m)
-+			return selmon;
-+		return m == selmon ? m : NULL;
-+	}
-+	for(n = 1, t = mons; t && t->next; n++, t = t->next) ;
-+	for(i = 1, t = mons; t && t->next && i < systraypinning; i++, t = t->next) ;
-+	if(systraypinningfailfirst && n < systraypinning)
-+		return mons;
-+	return t;
-+}
-+
- void
- zoom(const Arg *arg)
  {
