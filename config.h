@@ -6,11 +6,11 @@ static const unsigned int snap = 32;    /* snap pixel */
 static const int showbar = 1;           /* 0 means no bar */
 static const int topbar = 1;            /* 0 means bottom bar */
 static const int gappx = 14;
-static const char *fonts[] = {"Fira Code:size=11",
-                              "Font Awesome 5 Brands:size=11",
-                              "Font Awesome 5 Free Solid:size=10"};
 
-static const char dmenufont[] = "Fira Code:size=10";
+static const char *fonts[] = {"FiraCode Nerd Font:size=10",
+                              "Noto Color Emoji:size=10"};
+
+static const char dmenufont[] = "FiraCode Nerd Font:size=10";
 static const char col_gray1[] = "#222222";
 static const char col_gray2[] = "#00ff88";
 static const char col_gray3[] = "#bbbbbb";
@@ -31,19 +31,24 @@ static const unsigned int alphas[][3] = {
 };
 
 /* tagging */
-static const char *tags[] = {"", "", "", "", "", "6", "7", "8", "9"};
+// static const char *tags[] = {"", "", "", "", "", "", "", "8", "9"};
+// static const char *tags[] = {"", "", "", "ﭮ", "", "", "", "8", "9"};
+static const char *tags[] = {"🌍", "👺", "🎮", "📞", "🎵", "🎥", "🦴", "🛖", "💜"};
 
 static const Rule rules[] = {
     /* xprop(1):
      *	WM_CLASS(STRING) = instance, class
      *	WM_NAME(STRING) = title
      */
-    /* class      instance    title       tags mask     isfloating   monitor */
+    /* class      instance    title       tags mask     isfloating   monitor
+     */
     {"Gimp", NULL, NULL, 0, 1, -1},
     {"discord", NULL, NULL, 1 << 3, 0, -1},
-    {"Spotify", "spotify", "Spotify", 1 << 4, 0, -1},
+    {"Microsoft Teams - Preview", NULL, NULL, 1 << 1, 0, -1},
+    {"obs", NULL, NULL, 1 << 5, 0, -1},
+    {"Steam", NULL, NULL, 1 << 6, 0, -1},
     {"Pavucontrol", NULL, NULL, 0, 1, -1},
-    {"Emoji-keyboard", NULL, NULL, 0, 1, -1},
+    {"MEGAsync", NULL, NULL, 0, 1, -1},
 };
 
 /* layout(s) */
@@ -52,11 +57,15 @@ static const int nmaster = 1;    /* number of clients in master area */
 static const int resizehints =
     1; /* 1 means respect size hints in tiled resizals */
 
+#include "fibonacci.c"
 static const Layout layouts[] = {
     /* symbol     arrange function */
-    {"[]=", tile}, /* first entry is default */
-    {"><>", NULL}, /* no layout function means floating behavior */
-    {"[M]", monocle},
+    {"[@]", spiral},   /* fibonacci first sequence    */
+    {"[]=", tile},     /* first entry is default */
+    {"><>", NULL},     /* no layout function means floating behavior */
+    {"[M]", monocle},  /* monocle layout                            */
+    {"[\\]", dwindle}, /* fibonacci second sequence */
+    {NULL, NULL},
 };
 #define MODKEY Mod4Mask
 #define TAGKEYS(KEY, TAG)                                                      \
@@ -80,17 +89,24 @@ static const char *dmenucmd[] = {
 
 static const char *termcmd[] = {"alacritty", NULL};
 
-static const char *roficmd[] = {"rofi", "-show", "drun", "-show-icons", NULL};
+static const char *rofidrun[] = {
+    "rofi", "-show", "drun", "-show-icons", "-terminal", "alacritty", NULL};
+static const char *rofirun[] = {"rofi",      "-show",       "run", "-terminal",
+                                "alacritty", "-show-icons", NULL};
 static const char *roficalccmd[] = {"rofi", "-show", "calc", NULL};
 
 static const char *pavucontrol[] = {"pavucontrol", NULL};
 
-static const char *screenshot[] = {"i3-scrot", "-sc", NULL};
+static const char *screenshot[] = {"/home/bodzio/scripts/scrot_clip.sh", NULL};
 
-static const char *volup[] = {"pactl", "set-sink-volume", "@DEFAULT_SINK@",
-                              "+8%", NULL};
-static const char *voldown[] = {"pactl", "set-sink-volume", "@DEFAULT_SINK@",
-                                "-8%", NULL};
+static const char *sysact[] = {"/home/bodzio/scripts/sysact", NULL};
+
+static const char *dmenuunicode[] = {"/home/bodzio/scripts/dmenuunicode.sh",
+                                     NULL};
+
+static const char *volup[] = {"/home/bodzio/scripts/change_vol.sh", "+3", NULL};
+static const char *voldown[] = {"/home/bodzio/scripts/change_vol.sh", "-3",
+                                NULL};
 static const char *volmute[] = {"pactl", "set-sink-mute", "@DEFAULT_SINK@",
                                 "toggle", NULL};
 static const char *playernext[] = {"playerctl", "next", NULL};
@@ -101,11 +117,14 @@ static const char *playerplaypause[] = {"playerctl", "play-pause", NULL};
 #include <X11/XF86keysym.h>
 static Key keys[] = {
     /* modifier                     key        function        argument */
-    {MODKEY, XK_d, spawn, {.v = roficmd}},
+    {MODKEY, XK_d, spawn, {.v = rofidrun}},
+    {MODKEY | ShiftMask, XK_d, spawn, {.v = rofirun}},
     {MODKEY, XK_c, spawn, {.v = roficalccmd}},
     {MODKEY, XK_Return, spawn, {.v = termcmd}},
+    {MODKEY, XK_e, spawn, {.v = dmenuunicode}},
     {MODKEY | ShiftMask, XK_m, spawn, {.v = pavucontrol}},
     {MODKEY | ShiftMask, XK_p, spawn, {.v = screenshot}},
+    {MODKEY, XK_BackSpace, spawn, {.v = sysact}},
     {MODKEY, XK_b, togglebar, {0}},
     {MODKEY, XK_j, focusstack, {.i = +1}},
     {MODKEY, XK_k, focusstack, {.i = -1}},
@@ -118,9 +137,14 @@ static Key keys[] = {
     {MODKEY, XK_Return, zoom, {0}},
     {MODKEY, XK_Tab, view, {0}},
     {MODKEY | ShiftMask, XK_q, killclient, {0}},
-    {MODKEY, XK_t, setlayout, {.v = &layouts[0]}},
-    {MODKEY, XK_f, setlayout, {.v = &layouts[1]}},
-    {MODKEY, XK_m, setlayout, {.v = &layouts[2]}},
+    {MODKEY | ShiftMask, XK_f, togglefullscr, {0}},
+    {MODKEY, XK_r, setlayout, {.v = &layouts[0]}},
+    {MODKEY, XK_t, setlayout, {.v = &layouts[1]}},
+    {MODKEY, XK_f, setlayout, {.v = &layouts[2]}},
+    {MODKEY, XK_m, setlayout, {.v = &layouts[3]}},
+    {MODKEY | ControlMask, XK_comma, cyclelayout, {.i = -1}},
+    {MODKEY | ControlMask, XK_period, cyclelayout, {.i = +1}},
+    {MODKEY | ShiftMask, XK_r, setlayout, {.v = &layouts[4]}},
     {MODKEY, XK_space, setlayout, {0}},
     {MODKEY | ShiftMask, XK_space, togglefloating, {0}},
     {MODKEY, XK_0, view, {.ui = ~0}},
