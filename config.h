@@ -11,7 +11,6 @@ static const unsigned int systrayspacing = 2;   /* systray spacing */
 static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
 static const int showsystray        = 1;     /* 0 means no systray */
 
-
 static const char *fonts[] = {"FiraCode Nerd Font:size=10",
                               "Noto Color Emoji:size=10"};
 
@@ -55,7 +54,7 @@ static const int nmaster = 1;    /* number of clients in master area */
 static const int resizehints =
     1; /* 1 means respect size hints in tiled resizals */
 
-#include "fibonacci.c"
+#include "vanitygaps.c"
 static const Layout layouts[] = {
     /* symbol     arrange function */
     {"[@]", spiral},   /* fibonacci first sequence    */
