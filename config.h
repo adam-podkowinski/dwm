@@ -3,6 +3,7 @@
 /* appearance */
 static const unsigned int borderpx = 2; /* border pixel of windows */
 static const unsigned int snap = 32;    /* snap pixel */
+static const int swallowfloating = 0;
 static const int showbar = 1;           /* 0 means no bar */
 static const int topbar = 1;            /* 0 means bottom bar */
 static const int gappx = 14;
@@ -44,16 +45,17 @@ static const Rule rules[] = {
      *	WM_CLASS(STRING) = instance, class
      *	WM_NAME(STRING) = title
      */
-    /* class      instance    title       tags mask     isfloating   monitor
+    /* class      instance    title       tags mask     isfloating    swallow   monitor
      */
-    {"Gimp", NULL, NULL, 0, 1, -1},
-    {"discord", NULL, NULL, 1 << 3, 0, -1},
-    {"Microsoft Teams - Preview", NULL, NULL, 1 << 1, 0, -1},
-    {"obs", NULL, NULL, 1 << 5, 0, -1},
-    {"Steam", NULL, NULL, 1 << 6, 0, -1},
-    {"Pavucontrol", NULL, NULL, 0, 1, -1},
-    {"MEGAsync", NULL, NULL, 0, 1, -1},
-    {NULL, NULL, "Android Emulator - Pixel_3_API_30:5554", 0, 1, -1},
+    {"Gimp", NULL, NULL, 0, 1, 0, -1},
+    {"discord", NULL, NULL, 1 << 3, 0, 0, -1},
+    {"Microsoft Teams - Preview", NULL, NULL, 1 << 1, 0, 0, -1},
+    {"obs", NULL, NULL, 1 << 5, 0, 0, -1},
+    {"Steam", NULL, NULL, 1 << 6, 0, 0, -1},
+    {"Pavucontrol", NULL, NULL, 0, 1, 0, -1},
+    {"MEGAsync", NULL, NULL, 0, 1, 0, -1},
+    {NULL, NULL, "Android Emulator - Pixel_3_API_30:5554", 0, 1, 0, -1},
+    {NULL, NULL, "Event Tester", 0, 0, 0, 1, -1},
 };
 
 /* layout(s) / */
