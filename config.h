@@ -53,6 +53,7 @@ static const Rule rules[] = {
     {"Steam", NULL, NULL, 1 << 6, 0, -1},
     {"Pavucontrol", NULL, NULL, 0, 1, -1},
     {"MEGAsync", NULL, NULL, 0, 1, -1},
+    {NULL, NULL, "Spotify Free", 1 << 4, 0, -1},
     {NULL, NULL, "Android Emulator - Pixel_3_API_30:5554", 0, 1, -1},
 };
 
@@ -165,6 +166,7 @@ static Key keys[] = {
     {0, XF86XK_AudioMute, spawn, {.v = volmute}},
     {0, XF86XK_AudioNext, spawn, {.v = playernext}},
     {0, XF86XK_AudioPrev, spawn, {.v = playerprev}},
+    {0, XF86XK_AudioPlay, spawn, {.v = playerplaypause}},
     TAGKEYS(XK_1, 0) TAGKEYS(XK_2, 1) TAGKEYS(XK_3, 2) TAGKEYS(XK_4, 3)
         TAGKEYS(XK_5, 4) TAGKEYS(XK_6, 5) TAGKEYS(XK_7, 6) TAGKEYS(XK_8, 7)
             TAGKEYS(XK_9, 8){MODKEY | ShiftMask, XK_c, quit, {0}},
