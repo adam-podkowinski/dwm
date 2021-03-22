@@ -102,15 +102,15 @@ static const char *roficalccmd[] = {"rofi", "-show", "calc", NULL};
 
 static const char *pavucontrol[] = {"pavucontrol", NULL};
 
-static const char *screenshot[] = {"/home/bodzio/scripts/scrot_clip.sh", NULL};
+static const char *screenshot[] = {"dash", "/home/bodzio/scripts/scrot_clip.sh", NULL};
 
 static const char *sysact[] = {"/home/bodzio/scripts/sysact", NULL};
 
-static const char *dmenuunicode[] = {"/home/bodzio/scripts/dmenuunicode.sh",
+static const char *dmenuunicode[] = {"dash", "/home/bodzio/scripts/dmenuunicode.sh",
                                      NULL};
 
-static const char *volup[] = {"/home/bodzio/scripts/change_vol.sh", "+3", NULL};
-static const char *voldown[] = {"/home/bodzio/scripts/change_vol.sh", "-3",
+static const char *volup[] = {"dash", "/home/bodzio/scripts/change_vol.sh", "+2", NULL};
+static const char *voldown[] = {"dash", "/home/bodzio/scripts/change_vol.sh", "-2",
                                 NULL};
 static const char *volmute[] = {"pactl", "set-sink-mute", "@DEFAULT_SINK@",
                                 "toggle", NULL};
