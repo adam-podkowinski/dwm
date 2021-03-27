@@ -35,8 +35,6 @@ static const unsigned int alphas[][3]      = {
 };
 
 /* tagging */
-// static const char *tags[] = {"", "", "", "", "", "", "", "8", "9"};
-// static const char *tags[] = {"", "", "", "ﭮ", "", "", "", "8", "9"};
 static const char *tags[] = {"🌍", "👺", "🎮", "📞", "🎵", "🎥", "🦴", "🛖", "💜"};
 
 static const Rule rules[] = {
@@ -52,9 +50,7 @@ static const Rule rules[] = {
     {"obs", NULL, NULL, 1 << 5, 0, -1},
     {"Steam", NULL, NULL, 1 << 6, 0, -1},
     {"Pavucontrol", NULL, NULL, 0, 1, -1},
-    {"MEGAsync", NULL, NULL, 0, 1, -1},
-    {NULL, NULL, "Spotify Free", 1 << 4, 0, -1},
-    {NULL, NULL, "Android Emulator - Pixel_3_API_30:5554", 0, 1, -1},
+    {"Spotify", NULL, NULL, 1 << 4, 0, -1},
 };
 
 /* layout(s) / */
@@ -94,6 +90,7 @@ static const char *dmenucmd[] = {"dmenu_run", NULL};
 
 static const char *termcmd[] = {"st", NULL};
 
+// You need to have my scripts git repo in your path
 static const char *rofidrun[] = {
     "rofi", "-show", "drun", "-show-icons", "-terminal", "alacritty", NULL};
 static const char *rofirun[] = {"rofi",      "-show",       "run", "-terminal",
@@ -102,15 +99,17 @@ static const char *roficalccmd[] = {"rofi", "-show", "calc", NULL};
 
 static const char *pavucontrol[] = {"pavucontrol", NULL};
 
-static const char *screenshot[] = {"dash", "/home/bodzio/scripts/scrot_clip.sh", NULL};
+static const char *screenshot[] = {"scrot_clip.sh", NULL};
 
-static const char *sysact[] = {"/home/bodzio/scripts/sysact", NULL};
+static const char *sysact[] = {"sysact", NULL};
 
-static const char *dmenuunicode[] = {"dash", "/home/bodzio/scripts/dmenuunicode.sh",
+static const char *colorpicker[] = {"colorpicker.sh", NULL};
+
+static const char *dmenuunicode[] = {"dmenuunicode.sh",
                                      NULL};
 
-static const char *volup[] = {"dash", "/home/bodzio/scripts/change_vol.sh", "+2", NULL};
-static const char *voldown[] = {"dash", "/home/bodzio/scripts/change_vol.sh", "-2",
+static const char *volup[] = {"change_vol.sh", "+2", NULL};
+static const char *voldown[] = {"change_vol.sh", "-2",
                                 NULL};
 static const char *volmute[] = {"pactl", "set-sink-mute", "@DEFAULT_SINK@",
                                 "toggle", NULL};
@@ -126,6 +125,7 @@ static Key keys[] = {
     {MODKEY, XK_p, spawn, {.v = dmenucmd}},
     {MODKEY | ShiftMask, XK_d, spawn, {.v = rofirun}},
     {MODKEY, XK_c, spawn, {.v = roficalccmd}},
+    {MODKEY | ShiftMask, XK_c, spawn, {.v = colorpicker}},
     {MODKEY, XK_Return, spawn, {.v = termcmd}},
     {MODKEY, XK_e, spawn, {.v = dmenuunicode}},
     {MODKEY | ShiftMask, XK_m, spawn, {.v = pavucontrol}},
@@ -169,7 +169,7 @@ static Key keys[] = {
     {0, XF86XK_AudioPlay, spawn, {.v = playerplaypause}},
     TAGKEYS(XK_1, 0) TAGKEYS(XK_2, 1) TAGKEYS(XK_3, 2) TAGKEYS(XK_4, 3)
         TAGKEYS(XK_5, 4) TAGKEYS(XK_6, 5) TAGKEYS(XK_7, 6) TAGKEYS(XK_8, 7)
-            TAGKEYS(XK_9, 8){MODKEY | ShiftMask, XK_c, quit, {0}},
+            TAGKEYS(XK_9, 8){MODKEY | ShiftMask | ControlMask, XK_c, quit, {0}},
 };
 
 /* button definitions */
