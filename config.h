@@ -105,6 +105,8 @@ static const char *sysact[] = {"sysact", NULL};
 
 static const char *colorpicker[] = {"colorpicker.sh", NULL};
 
+static const char *xkill[] = {"xkill", NULL};
+
 static const char *dmenuunicode[] = {"dmenuunicode.sh",
                                      NULL};
 
@@ -126,6 +128,7 @@ static Key keys[] = {
     {MODKEY | ShiftMask, XK_d, spawn, {.v = rofirun}},
     {MODKEY, XK_c, spawn, {.v = roficalccmd}},
     {MODKEY | ShiftMask, XK_c, spawn, {.v = colorpicker}},
+    {MODKEY | ShiftMask, XK_x, spawn, {.v = xkill}},
     {MODKEY, XK_Return, spawn, {.v = termcmd}},
     {MODKEY, XK_e, spawn, {.v = dmenuunicode}},
     {MODKEY | ShiftMask, XK_m, spawn, {.v = pavucontrol}},
