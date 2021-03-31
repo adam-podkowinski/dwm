@@ -22,7 +22,7 @@ static const char col_gray3[] = "#bbbbbb";
 static const char col_gray4[] = "#eeeeee";
 static const char col_cyan[] = "#ff8800";
 //static const unsigned int baralpha = 0xb0;
-static const unsigned int baralpha = 0x0;
+static const unsigned int baralpha = 0xb0;
 static const unsigned int borderalpha = OPAQUE;
 static const char *colors[][3] = {
     /*               fg         bg         border   */
@@ -103,6 +103,7 @@ static const char *roficalccmd[] = {"rofi", "-show", "calc", NULL};
 
 static const char *pavucontrol[] = {"pavucontrol", NULL};
 
+static const char *screenshotPick[] = {"scrot_clip.sh", "pick", NULL};
 static const char *screenshot[] = {"scrot_clip.sh", NULL};
 
 static const char *sysact[] = {"sysact", NULL};
@@ -136,7 +137,8 @@ static Key keys[] = {
     {MODKEY, XK_Return, spawn, {.v = termcmd}},
     {MODKEY, XK_e, spawn, {.v = dmenuunicode}},
     {MODKEY | ShiftMask, XK_m, spawn, {.v = pavucontrol}},
-    {MODKEY | ShiftMask, XK_p, spawn, {.v = screenshot}},
+    {MODKEY | ShiftMask, XK_p, spawn, {.v = screenshotPick}},
+    {MODKEY, XK_Print, spawn, {.v = screenshot}},
     {MODKEY, XK_BackSpace, spawn, {.v = sysact}},
     {MODKEY, XK_b, togglebar, {0}},
     {MODKEY, XK_j, focusstack, {.i = +1}},
