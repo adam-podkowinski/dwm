@@ -20,7 +20,8 @@ static const char col_gray1[] = "#222222";
 static const char col_gray2[] = "#00ff88";
 static const char col_gray3[] = "#bbbbbb";
 static const char col_gray4[] = "#eeeeee";
-static const char col_cyan[] = "#ff8800";
+//static const char col_cyan[] = "#ff8800";
+static const char col_cyan[] = "#2f78f5";
 //static const unsigned int baralpha = 0xb0;
 static const unsigned int baralpha = 0xb0;
 static const unsigned int borderalpha = OPAQUE;
@@ -36,7 +37,7 @@ static const unsigned int alphas[][3]      = {
 };
 
 /* tagging */
-static const char *tags[] = {"🌍", "👺", "🎮", "📞", "🎵", "🎥", "🦴", "🛖", "💜"};
+static const char *tags[] = {"🌍", "👺", "🎮", "📞", "🎵", "🎥", "🦴", "📬", "💜"};
 
 static const Rule rules[] = {
     /* xprop(1):
@@ -50,6 +51,7 @@ static const Rule rules[] = {
     {"Microsoft Teams - Preview", NULL, NULL, 1 << 1,   0,            0,           0,           -1},
     {"obs",       NULL,       NULL,       1 << 5,       0,            0,           0,           -1},
     {"Steam",     NULL,       NULL,       1 << 6,       0,            0,           0,           -1},
+    {"Mailspring",     NULL,       NULL,       1 << 7,       0,            0,           0,           -1},
     {"Pavucontrol", NULL,     NULL,       0,            1,            0,           0,           -1},
     {"Spotify",   NULL,       NULL,       1 << 4,       0,            0,           0,           -1},
     {"St",        NULL,       NULL,       0,            0,            1,           0,           -1},
@@ -103,8 +105,8 @@ static const char *roficalccmd[] = {"rofi", "-show", "calc", NULL};
 
 static const char *pavucontrol[] = {"pavucontrol", NULL};
 
-static const char *screenshotPick[] = {"scrot_clip.sh", "pick", NULL};
-static const char *screenshot[] = {"scrot_clip.sh", NULL};
+static const char *screenshotPick[] = {"screen_clip.sh", "pick", NULL};
+static const char *screenshot[] = {"screen_clip.sh", NULL};
 
 static const char *sysact[] = {"sysact", NULL};
 
