@@ -50,6 +50,7 @@ static const Rule rules[] = {
     {"Microsoft Teams - Preview", NULL, NULL, 1 << 1,   0,            0,           0,           -1},
     {"obs",       NULL,       NULL,       1 << 5,       0,            0,           0,           -1},
     {"Steam",     NULL,       NULL,       1 << 6,       0,            0,           0,           -1},
+    {"qBittorrent",     NULL,       NULL,       1 << 8,       0,            0,           0,           -1},
     {"Mailspring",     NULL,       NULL,       1 << 7,       0,            0,           0,           -1},
     {"Pavucontrol", NULL,     NULL,       0,            1,            0,           0,           -1},
     {"Spotify",   NULL,       NULL,       1 << 4,       0,            0,           0,           -1},
