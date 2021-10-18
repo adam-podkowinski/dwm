@@ -17,13 +17,13 @@ static const char *fonts[] = {"FiraCode Nerd Font:size=10",
 
 static const char dmenufont[] = "FiraCode Nerd Font:size=10";
 static const char col_gray1[] = "#222222";
-static const char col_gray2[] = "#00ff88";
+static const char col_gray2[] = "#eeb7f9";
 static const char col_gray3[] = "#bbbbbb";
 static const char col_gray4[] = "#eeeeee";
 //static const char col_cyan[] = "#ff8800";
-static const char col_cyan[] = "#2f78f5";
+static const char col_cyan[] = "#4fd455";
 //static const unsigned int baralpha = 0xb0;
-static const unsigned int baralpha = 0xb0;
+static const unsigned int baralpha = 0xFF;
 static const unsigned int borderalpha = OPAQUE;
 static const char *colors[][3] = {
     /*               fg         bg         border   */
