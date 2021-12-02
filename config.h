@@ -2,7 +2,7 @@
 
 /* appearance */
 static const unsigned int borderpx = 2; /* border pixel of windows */
-static const unsigned int snap = 16;    /* snap pixel */
+static const unsigned int snap = 12;    /* snap pixel */
 static const int showbar = 1;           /* 0 means no bar */
 static const int topbar = 1;            /* 0 means bottom bar */
 static const int gappx = 12;
@@ -12,16 +12,19 @@ static const unsigned int systrayspacing = 2;   /* systray spacing */
 static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
 static const int showsystray        = 1;     /* 0 means no systray */
 
-static const char *fonts[] = {"FiraCode Nerd Font:size=10",
+static const char *fonts[] = {"Fira Code Retina:size=10:antialias=true:autohint=true",
                               "Noto Color Emoji:size=10"};
 
 static const char dmenufont[] = "FiraCode Nerd Font:size=10";
 static const char col_gray1[] = "#222222";
-static const char col_gray2[] = "#eeb7f9";
+//static const char col_gray2[] = "#eeb7f9";
+static const char col_gray2[] = "#323034";
 static const char col_gray3[] = "#bbbbbb";
-static const char col_gray4[] = "#eeeeee";
+//static const char col_gray4[] = "#eeeeee";
+static const char col_gray4[] = "#323034";
 //static const char col_cyan[] = "#ff8800";
-static const char col_cyan[] = "#4fd455";
+//static const char col_cyan[] = "#f3a43d";
+static const char col_cyan[] = "#aeb0e0";
 //static const unsigned int baralpha = 0xb0;
 static const unsigned int baralpha = 0xFF;
 static const unsigned int borderalpha = OPAQUE;
@@ -37,7 +40,8 @@ static const unsigned int alphas[][3]      = {
 };
 
 /* tagging */
-static const char *tags[] = {"🌍", "👺", "🎮", "📞", "🎵", "🎥", "🦴", "📬", "💜"};
+//static const char *tags[] = {"🌍", "👺", "🎮", "📞", "🎵", "🎥", "🦴", "📬", "💜"};
+static const char *tags[] = {"1", "2", "3", "4", "5", "6", "7", "8"};
 
 static const Rule rules[] = {
     /* xprop(1):
@@ -68,7 +72,7 @@ static const int resizehints =
 #include "vanitygaps.c"
 static const Layout layouts[] = {
     /* symbol     arrange function */
-    {"[@]", spiral},   /* fibonacci first sequence    */
+    {"│", spiral},   /* fibonacci first sequence    */
     {"[]=", tile},     /* first entry is default */
     {"|M|", centeredmaster},
     {"><>", NULL},     /* no layout function means floating behavior */
