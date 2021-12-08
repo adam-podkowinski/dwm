@@ -12,7 +12,8 @@ static const unsigned int systrayspacing = 2;   /* systray spacing */
 static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display systray on the first monitor, False: display systray on the last monitor*/
 static const int showsystray        = 1;     /* 0 means no systray */
 
-static const char *fonts[] = {"Fira Code Retina:size=10:antialias=true:autohint=true",
+//static const char *fonts[] = {"Fira Code Retina:size=10:antialias=true:autohint=true",
+static const char *fonts[] = {"Cascadia Code:size=11:antialias=true:autohint=true",
                               "Noto Color Emoji:size=10"};
 
 static const char dmenufont[] = "FiraCode Nerd Font:size=10";
