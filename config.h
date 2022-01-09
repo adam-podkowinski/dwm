@@ -59,7 +59,7 @@ static const Rule rules[] = {
     {"Mailspring",     NULL,       NULL,       1 << 7,       0,            0,           0,           -1},
     {"Pavucontrol", NULL,     NULL,       0,            1,            0,           0,           -1},
     {"Spotify",   NULL,       NULL,       1 << 4,       0,            0,           0,           -1},
-    {"St",        NULL,       NULL,       0,            0,            1,           0,           -1},
+    {"St",        NULL,       NULL,       0,            0,            0,           0,           -1},
     {NULL,        NULL,       "Event Tester", 0,        0,            0,           1,           -1}, /* xev */
 
 };
