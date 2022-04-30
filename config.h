@@ -13,7 +13,7 @@ static const int systraypinningfailfirst = 1;   /* 1: if pinning fails, display 
 static const int showsystray        = 1;     /* 0 means no systray */
 
 //static const char *fonts[] = {"Fira Code Retina:size=10:antialias=true:autohint=true",
-static const char *fonts[] = {"Cascadia Code:size=11:antialias=true:autohint=true",
+static const char *fonts[] = {"JetBrainsMono Nerd Font Mono:weight=Medium:pixelsize=16:antialias=true:autohint=true",
                               "Noto Color Emoji:size=10"};
 
 static const char dmenufont[] = "FiraCode Nerd Font:size=10";
@@ -55,8 +55,8 @@ static const Rule rules[] = {
     {"Microsoft Teams - Preview", NULL, NULL, 1 << 1,   0,            0,           0,           -1},
     {"obs",       NULL,       NULL,       1 << 5,       0,            0,           0,           -1},
     {"Steam",     NULL,       NULL,       1 << 6,       0,            0,           0,           -1},
-    {"qBittorrent",     NULL,       NULL,       1 << 8,       0,            0,           0,           -1},
-    {"Mailspring",     NULL,       NULL,       1 << 7,       0,            0,           0,           -1},
+    {"qBittorrent", NULL,     NULL,       1 << 8,       0,            0,           0,           -1},
+    {"Mailspring", NULL,      NULL,       1 << 7,       0,            0,           0,           -1},
     {"Pavucontrol", NULL,     NULL,       0,            1,            0,           0,           -1},
     {"Spotify",   NULL,       NULL,       1 << 4,       0,            0,           0,           -1},
     {"St",        NULL,       NULL,       0,            0,            0,           0,           -1},
